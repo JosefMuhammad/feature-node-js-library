@@ -16,11 +16,11 @@ const usersModel = mongoose.model("user", {
   email: {
     type: String,
   },
-  age: {
-    type: Number,
-    // min: 18,
-    required: false,
-    default: 18,
+  password: {
+    type: String,
+    require: true,
+    minLength: 8,
+    maxLength: 12,
   },
 });
 

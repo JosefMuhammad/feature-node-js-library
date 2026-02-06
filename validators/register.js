@@ -6,12 +6,12 @@ const schema = {
   name: {
     type: "string",
     min: 3,
-    max: 12,
+    max: 20,
   },
   username: {
     type: "string",
     min: 3,
-    max: 5,
+    max: 50,
   },
   email: {
     type: "string",
@@ -19,7 +19,7 @@ const schema = {
   password: {
     type: "string",
     min: 8,
-    max: 12,
+    max: 20,
   },
   confirmPassword: {
     type: "equal",
@@ -28,3 +28,7 @@ const schema = {
 
   $$strict: true, //no additional properties is allowed
 };
+
+const check = v.compile(schema);
+
+module.exports = check;
