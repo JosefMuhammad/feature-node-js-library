@@ -2,7 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const usersModel = require("./models/users");
 const booksModel = require("./models/books");
-const registerValidator = require("./validators/register");
+const registerValidator = require("./validators/userRegister");
+const bookRegisterValidator = require("./validators/booksRegister");
 require("./configs/db");
 
 const app = express(); // server
@@ -33,30 +34,24 @@ app.post("/api/users/register", async (req, res) => {
   });
 });
 
-app.post("/api/books", async (req, res) => {
-  try {
-    const { author, title, price } = req.body;
+app.post("/api/books/register", async (req, res) => {
+  const { author, title, price } = req.body;
+  const validationResult = bookRegisterValidator(req.body);
 
-    if (!author || !title || !price) {
-      return res.status(422).json({
-        message: "Data is not valid",
-      });
-    }
-
-    const book = await booksModel.create({
-      author,
-      title,
-      price,
-    });
-
-    res.status(201).json({
-      message: "New Book was added successfully",
-      book,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: error.message });
+  if (validationResult !== true) {
+    res.status(422).json(validationResult);
   }
+
+  const book = await booksModel.create({
+    author,
+    title,
+    price,
+  });
+
+  res.status(201).json({
+    message: "New Book was added successfully",
+    book,
+  });
 });
 
 app.listen(3000, () => {
