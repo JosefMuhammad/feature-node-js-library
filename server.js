@@ -69,6 +69,21 @@ app.delete("/api/users/:id", async (req, res) => {
 
   res.status(200).json({ message: "User was deleted successfully" });
 });
+
+app.delete("/api/books/:id", async (req, res) => {
+  const { id } = req.params;
+
+  if (isValidObjectId(id)) {
+    const deletedBook = await booksModel.findByIdAndDelete({ _id: id });
+    if (!deletedBook) {
+      res.status(404).json({ message: "There no such book with this id! " });
+    }
+  } else {
+    return res.status(422).json({ message: "Book's id is not valid" });
+  }
+
+  res.status(200).json({ message: "Book was deleted successfully" });
+});
 app.listen(3000, () => {
   console.log(`Server Running On Port 3000`);
 });
