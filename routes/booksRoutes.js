@@ -1,0 +1,43 @@
+const express = require("express");
+const bookRegisterValidator = require("../validators/booksRegister");
+const booksModel = require("../models/books");
+const { isValidObjectId } = require("mongoose");
+
+const bookRouter = express.Router();
+
+bookRouter.post("/register", async (req, res) => {
+  const { author, title, price } = req.body;
+  const validationResult = bookRegisterValidator(req.body);
+
+  if (validationResult !== true) {
+    res.status(422).json(validationResult);
+  }
+
+  const book = await booksModel.create({
+    author,
+    title,
+    price,
+  });
+
+  res.status(201).json({
+    message: "New Book was added successfully",
+    book,
+  });
+});
+
+bookRouter.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  if (isValidObjectId(id)) {
+    const deletedBook = await booksModel.findByIdAndDelete({ _id: id });
+    if (!deletedBook) {
+      res.status(404).json({ message: "There no such book with this id! " });
+    }
+  } else {
+    return res.status(422).json({ message: "Book's id is not valid" });
+  }
+
+  res.status(200).json({ message: "Book was deleted successfully" });
+});
+
+module.exports = bookRouter;
