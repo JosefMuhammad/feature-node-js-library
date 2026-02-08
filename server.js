@@ -4,6 +4,7 @@ const usersModel = require("./models/users");
 const booksModel = require("./models/books");
 const registerValidator = require("./validators/userRegister");
 const bookRegisterValidator = require("./validators/booksRegister");
+const { isValidObjectId } = require("mongoose");
 require("./configs/db");
 
 const app = express(); // server
@@ -54,6 +55,20 @@ app.post("/api/books/register", async (req, res) => {
   });
 });
 
+app.delete("/api/users/:id", async (req, res) => {
+  const { id } = req.params;
+
+  if (isValidObjectId(id)) {
+    const deletedUser = await usersModel.findByIdAndDelete({ _id: id });
+    if (!deletedUser) {
+      res.status(404).json({ message: "There no such user with this id! " });
+    }
+  } else {
+    return res.status(422).json({ message: "User's id is not valid" });
+  }
+
+  res.status(200).json({ message: "User was deleted successfully" });
+});
 app.listen(3000, () => {
   console.log(`Server Running On Port 3000`);
 });
