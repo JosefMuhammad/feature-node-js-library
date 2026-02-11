@@ -1,6 +1,6 @@
 const express = require("express");
 const bookRegisterValidator = require("../validators/booksRegister");
-const booksModel = require("../models/books");
+const booksModel = require("../models/booksModel");
 const { isValidObjectId } = require("mongoose");
 
 const bookRouter = express.Router();

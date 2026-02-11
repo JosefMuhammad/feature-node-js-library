@@ -1,6 +1,6 @@
 const express = require("express");
 const registerValidator = require("../validators/userRegister");
-const usersModel = require("../models/users");
+const usersModel = require("../models/usersModel");
 const { isValidObjectId } = require("mongoose");
 
 const userRouter = express.Router();
