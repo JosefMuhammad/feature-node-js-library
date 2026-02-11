@@ -1,44 +1,10 @@
 const express = require("express");
-const registerValidator = require("../validators/userRegister");
-const usersModel = require("../models/usersModel");
-const { isValidObjectId } = require("mongoose");
+const usersController = require("../controllers/usersController");
 
 const userRouter = express.Router();
 
-userRouter.post("/register", async (req, res) => {
-  const { name, username, email, age, password } = req.body;
-  const validationResult = registerValidator(req.body);
-  if (validationResult !== true) {
-    return res.status(422).json(validationResult);
-  }
+userRouter.post("/register", usersController.register);
 
-  const user = await usersModel.create({
-    name,
-    username,
-    email,
-    age,
-    password,
-  });
-
-  res.status(201).json({
-    message: "New user created successfully",
-    user,
-  });
-});
-
-userRouter.delete("/:id", async (req, res) => {
-  const { id } = req.params;
-
-  if (isValidObjectId(id)) {
-    const deletedUser = await usersModel.findByIdAndDelete({ _id: id });
-    if (!deletedUser) {
-      res.status(404).json({ message: "There no such user with this id! " });
-    }
-  } else {
-    return res.status(422).json({ message: "User's id is not valid" });
-  }
-
-  res.status(200).json({ message: "User was deleted successfully" });
-});
+userRouter.delete("/:id", usersController.remove);
 
 module.exports = userRouter;
