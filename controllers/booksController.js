@@ -36,3 +36,26 @@ exports.remove = async (req, res) => {
 
   res.status(200).json({ message: "Book was deleted successfully" });
 };
+
+exports.getAll = async (req, res) => {
+  const books = await booksModel.find({}).lean();
+  res.json(books);
+};
+
+exports.getOne = async (req, res) => {
+  const { id } = req.params;
+  let book = null;
+
+  if (isValidObjectId) {
+    book = await booksModel.findOne({ _id: id });
+    if (!book) {
+      res
+        .status(404)
+        .json({ message: "There is no such a book with this id! " });
+    }
+  } else {
+    res.status(422).json({ message: "Books was found successfully" });
+  }
+
+  res.json(book);
+};

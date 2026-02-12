@@ -3,8 +3,14 @@ const usersController = require("../controllers/usersController");
 
 const userRouter = express.Router();
 
-userRouter.post("/register", usersController.register);
+userRouter
+  .route("/")
+  .get(usersController.getAll)
+  .post(usersController.register);
 
-userRouter.delete("/:id", usersController.remove);
+userRouter
+  .route("/:id")
+  .delete(usersController.remove)
+  .get(usersController.getOne);
 
 module.exports = userRouter;

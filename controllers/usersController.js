@@ -37,3 +37,24 @@ exports.remove = async (req, res) => {
 
   res.status(200).json({ message: "User was deleted successfully" });
 };
+
+exports.getAll = async (req, res) => {
+  const users = await usersModel.find({}).lean();
+  res.json(users);
+};
+
+exports.getOne = async (req, res) => {
+  const { id } = req.params;
+  let user = null;
+
+  if (isValidObjectId(id)) {
+    user = await usersModel.findOne({ _id: id });
+    if (!user) {
+      res.status(404).json({ message: "There no such user with this id! " });
+    }
+  } else {
+    return res.status(422).json({ message: "User's id is not valid" });
+  }
+
+  res.json(user);
+};

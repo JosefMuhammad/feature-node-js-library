@@ -3,8 +3,14 @@ const booksController = require("../controllers/booksController");
 
 const bookRouter = express.Router();
 
-bookRouter.post("/register", booksController.register);
+bookRouter
+  .route("/")
+  .get(booksController.getAll)
+  .post(booksController.register);
 
-bookRouter.delete("/:id", booksController.remove);
+bookRouter
+  .route("/:id")
+  .get(booksController.getOne)
+  .delete(booksController.remove);
 
 module.exports = bookRouter;
