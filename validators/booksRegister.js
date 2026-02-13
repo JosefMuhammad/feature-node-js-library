@@ -15,6 +15,9 @@ const schema = {
   price: {
     type: "number",
   },
+  free: {
+    type: "number",
+  },
 
   $$strict: true,
 };

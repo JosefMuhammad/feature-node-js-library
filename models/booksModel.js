@@ -18,6 +18,11 @@ const booksModel = mongoose.model("book", {
     required: true,
     default: 0,
   },
+  free: {
+    type: Number,
+    require: true,
+    default: 0,
+  },
 });
 
 module.exports = booksModel;

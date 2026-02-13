@@ -3,7 +3,7 @@ const booksModel = require("../models/booksModel");
 const { isValidObjectId } = require("mongoose");
 
 exports.register = async (req, res) => {
-  const { author, title, price } = req.body;
+  const { author, title, price, free } = req.body;
   const validationResult = bookRegisterValidator(req.body);
 
   if (validationResult !== true) {
@@ -14,6 +14,7 @@ exports.register = async (req, res) => {
     author,
     title,
     price,
+    free,
   });
 
   res.status(201).json({
