@@ -47,7 +47,7 @@ exports.getOne = async (req, res) => {
   let book = null;
 
   if (isValidObjectId) {
-    book = await booksModel.findOne({ _id: id });
+    book = await booksModel.findOne({ _id: id }, "-__v");
     if (!book) {
       res
         .status(404)

@@ -48,7 +48,7 @@ exports.getOne = async (req, res) => {
   let user = null;
 
   if (isValidObjectId(id)) {
-    user = await usersModel.findOne({ _id: id });
+    user = await usersModel.findOne({ _id: id }, "-__v");
     if (!user) {
       res.status(404).json({ message: "There no such user with this id! " });
     }
